@@ -74,42 +74,6 @@ strategy minimax(int board[9], int whoseTurn, int numBlanks) {
   return result;
 }
 
-strategy alpha_beta_minimax(int board[9], int whoseTurn, int alpha, int beta, int numBlanks) {
-  // Our recursive base cases
-  int evaluation = evaluate(board);
-  if (evaluation != 0) {
-    strategy result = {-1, evaluation}; // -1 for the move, since we can't move
-    return result;
-  }
-  if (numBlanks == 0) {
-    strategy result = {-1, 0}; // again, -1 for the move because we can't move
-    return result;
-  }
-
-  // Recursive portion of the algorithm
-  int bestMove = -1;
-  int bestVal = (whoseTurn == AI) ? -INF : INF;
-  for (int i = 0; i < 9; i++) {
-    if (board[i] == EMPTY) {
-      // Searching through all branches
-      board[i] = whoseTurn; // whoseTurn moves
-      int branchVal = minimax(board, -whoseTurn, numBlanks - 1).payoff; // 1 and -1 were conveniently chosen
-      if (whoseTurn == AI) {
-        bestVal = max(branchVal, bestVal); // the computer is the maximizer
-      } else {
-        bestVal = min(branchVal, bestVal); // the human is the minimizer
-      }
-      board[i] = EMPTY; // reset the board
-
-      if (bestVal == branchVal) {
-        bestMove = i; // keep track of what move yielded the best payoff for whoseTurn
-      }
-    }
-  }
-  strategy result = {bestMove, bestVal}; // return the best move and payoff associated with it
-  return result;
-}
-
 /* Returns a symbol given an integer representation */
 char getSymbol(int r) {
   switch (r) {
